@@ -43,6 +43,10 @@ spec:
         - name: wait-for-redis
           image: {{ include "diode.busybox.image" . }}
           imagePullPolicy: {{ include "diode.busybox.imagepullpolicy" . }}
+          {{- with .Values.global.diode.busybox.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           command:
             - sh
             - -c

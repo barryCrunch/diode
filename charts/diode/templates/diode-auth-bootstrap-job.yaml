@@ -34,6 +34,10 @@ spec:
         - name: wait-for-oauth2-server
           image: {{ include "diode.busybox.image" . }}
           imagePullPolicy: {{ include "diode.busybox.imagepullpolicy" . }}
+          {{- with .Values.global.diode.busybox.resources }}
+          resources:
+            {{- toYaml . | nindent 12}}
+          {{- end }}
           command:
             - sh
             - -c
@@ -54,6 +58,10 @@ spec:
           image: "{{ .Values.diodeAuthBootstrap.image.repository }}:{{ .Values.diodeAuthBootstrap.image.tag }}"
           imagePullPolicy: {{ .Values.diodeAuthBootstrap.image.pullPolicy | default "IfNotPresent" }}
           command: ["/bin/sh", "/etc/config/oauth2/bootstrap-clients.sh"]
+          {{- with .Values.diodeAuthBootstrap.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           env:
             - name: HYDRA_ADMIN_URL
               value: {{ include "diode.hydra.admin.url" . }}

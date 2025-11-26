@@ -418,6 +418,10 @@ Create the name of the extra Hydra init container configmap to use
 - name: wait-for-postgres
   image: {{ .Values.global.diode.busybox.image }}
   imagePullPolicy: {{ .Values.global.diode.busybox.imagePullPolicy }}
+  {{- with .Values.global.diode.busybox.resources }}
+  resources:
+    {{- toYaml . | nindent 12 }}
+  {{- end }}
   command: ['sh', '-c', 'until nc -zv $POSTGRES_HOST $POSTGRES_PORT; do echo waiting for PostgreSQL; sleep 2; done;']
   envFrom:
     - configMapRef:

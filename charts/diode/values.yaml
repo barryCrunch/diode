@@ -5,6 +5,14 @@ global:
     busybox:
       image: busybox:latest
       imagePullPolicy: IfNotPresent
+      # -- resources for busybox init containers
+      resources:
+        requests:
+          cpu: 10m
+          memory: 16Mi
+        limits:
+          cpu: 50m
+          memory: 32Mi
     # -- hydra additional init containers configuration
     hydra:
       # -- wait for PostgreSQL to be reachable
@@ -130,6 +138,14 @@ diodeAuthBootstrap:
     imagePullSecrets: []
     # -- pull policy
     pullPolicy: IfNotPresent
+  # -- resources
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
   job:
     # -- backoff limit
     backoffLimit: 20
@@ -459,6 +475,16 @@ hydra:
     # -- (string or list) extra init containers
     extraInitContainers: |-
       {{ include "diode.hydra.extrainitcontainers" . }}
+  hydra-maester:
+    # -- resources for hydra-maester controller
+    deployment:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 64Mi
+        limits:
+          cpu: 100m
+          memory: 128Mi
 
 # Ingress Nginx Controller configuration (optional)
 # -- ref: https://github.com/kubernetes/ingress-nginx/blob/main/charts/ingress-nginx/values.yaml
